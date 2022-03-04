@@ -104,12 +104,14 @@ program
 	.option('-f, --ffmpeg <string>')
 	.option('-p, --pagestop <number>')
 	.option('--grabAll')
+	.option('--stopCount <number>')
 
 program.parse()
 
 	; (async () => {
 		const options = program.opts()
 		const subreddit = options.subreddit
+		const stopCount = parseInt(options.stopCount, 10)
 		const grabAllFlag = Boolean(options.grabAll)
 		const limit = options.limit ? parseInt(options.limit) : 50
 		const pageStop = options.pagestop ? parseInt(options.pagestop, 10) : null
@@ -137,12 +139,13 @@ program.parse()
 			process.exit()
 		}
 
-
+		let forceStop = false
 		let hasMore = true
 		let after = null
 		let page = 0
+		let alreadyDownloadedCounter = 0
 
-		while (hasMore) {
+		while (hasMore && !forceStop) {
 			console.log(`Page #${++page}`)
 
 			let items = []
@@ -185,7 +188,17 @@ program.parse()
 				try {
 					const alreadyDownloaded = archive.includes(videoURL)
 
+					if (alreadyDownloaded && _.isNumber(stopCount)) {
+						alreadyDownloadedCounter++
+
+						if (alreadyDownloadedCounter >= stopCount) {
+							forceStop = true
+							break
+						}
+					}
+
 					if (isVideo && !alreadyDownloaded) {
+						alreadyDownloadedCounter = 0
 						const localFilePath = await downloadFile({ fileUrl: videoURL, title: trimmedTitle, downloadFolder, timestamp, author })
 
 						archive.push(videoURL)

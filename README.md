@@ -18,5 +18,8 @@ node download.js --subreddit <name> --grabAll --limit 100
 node download.js --subreddit <name> --grabAll --limit 100 --pagestop 2
 
 # if you provide ffmpeg path it will write video title and text into meta comment
-node download.js --subreddit <name> --grabAll --limit 100 --ffmpeg D:\Programs\ffmpeg-5.0-full_build\bin\ffmpeg.exe --pagestop 1
+node download.js --subreddit <name> --grabAll --limit 100 --ffmpeg D:\Programs\ffmpeg-5.0-full_build\bin\ffmpeg.exe --pagestop 1 
+
+# after 10 already downloaded videos records in the row script is ended
+node download.js --subreddit <name> --grabAll --limit 100 --ffmpeg D:\Programs\ffmpeg-5.0-full_build\bin\ffmpeg.exe --pagestop 1 --stopCount 10
 ```
