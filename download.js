@@ -209,14 +209,14 @@ program.parse()
 								comment: `${permalink} \n\n${title} \n${selfText}`,
 							})
 						}
+
+						await sleep(1000)
 					} else {
 						console.log(`SKIPPED ${!isVideo ? 'not a video' : ''}${alreadyDownloaded ? 'already downloaded' : ''} [${title}] `)
 					}
 				} catch (e) {
 					console.error(`${title} download error! ${e.message}`)
 				}
-
-				await sleep(1000)
 			}
 
 			if (!grabAllFlag) {
@@ -226,6 +226,8 @@ program.parse()
 			if (pageStop && pageStop <= page) {
 				hasMore = false
 			}
+
+			await sleep(1000)
 		}
 
 	})()
